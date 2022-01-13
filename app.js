@@ -1,10 +1,22 @@
-// require express
 const express = require('express')
+const exphbs = require('express-handlebars')
+const mongoose = require('mongoose')
+
 const app = express()
 port = 3000
-// require express-handlebars
-const exphbs = require('express-handlebars')
-// require restaurants list
+
+mongoose.connect('mongodb://localhost/restaurants-list')
+
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log('mongodb error')
+})
+
+db.once('open', () => {
+  console.log('mongodb connected')
+})
+
 const restaurants = require('./restaurant.json')
 
 //set template engine
