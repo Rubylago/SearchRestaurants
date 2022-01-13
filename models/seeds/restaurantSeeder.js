@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const RestaurantSchema = require('../Restaurant')
 
 // 載入 restaurant.jason
-const restaurantList = require('../../restaurant.json')
+const restaurantList = require('../../restaurant.json').results
 
 mongoose.connect('mongodb://localhost/restaurants-list')
 
