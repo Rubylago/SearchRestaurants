@@ -2,6 +2,9 @@
 <div class="container">
 <a href="/">back</a>  
 <a href="/restaurants/{{ item._id }}/edit" style="padding: 5px;">Edit</a>
+<form action="/restaurants/{{ item._id }}/delete" method="POST" style="display: inline;">
+  <button>Delete</button>
+</form> 
   <div class="row">
     <div class="col-12 col-md-10 mx-auto">
 

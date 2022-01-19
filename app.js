@@ -1,6 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
-const { get } = require('express/lib/response')
+const { get, redirect } = require('express/lib/response')
 const mongoose = require('mongoose')
 const RestaurantSchema = require('./models/Restaurant')
 const app = express()
@@ -99,6 +99,15 @@ app.get('/search', (req, res)=>{
   
   res.render('index', {restaurant: restaurant, keyword: keyword})
 })
+
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return RestaurantSchema.findById(id)
+    .then(item => item.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 
 app.listen(port, ()=>(
   console.log(`this app is listen to http://localhost:${port}`)
