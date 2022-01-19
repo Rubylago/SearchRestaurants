@@ -70,6 +70,23 @@ app.get('/restaurants/:id', (req, res)=>{
   // res.render('show', { restaurant: restaurant })
 })
 
+app.get('/restaurants/:id/edit', (req, res) => {
+  // console.log('restaurants id:', req.params.id)
+  const id = req.params.id
+  return RestaurantSchema.findById(id)
+    .lean()
+    .then(item => res.render('edit', { item }))
+    .catch(error => console.log(error))
+})
+
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const data = req.body
+  return RestaurantSchema.findByIdAndUpdate(id, data)
+    .then(() => res.redirect(`/restaurants/${id}/edit`))
+    .catch(error => console.log(error))
+})
+
 app.get('/search', (req, res)=>{
   // get queryString
   // console.log('query:', req.query.keyword)
