@@ -14,6 +14,16 @@
 
 。使用者可以透過搜尋餐廳類別來找到特定的餐廳
 
+。使用者可以新增一家餐廳
+
+。使用者可以瀏覽一家餐廳的詳細資訊
+
+。使用者可以瀏覽全部所有餐廳
+
+。使用者可以修改一家餐廳的資訊
+
+。使用者可以刪除一家餐廳
+
 ### Installing
 
 Clone the repo
@@ -37,5 +47,7 @@ That's it, now the app should be running on http://localhost:3000
 ## 使用工具
 
 Visual Studio Code - 開發環境
+
 Express - 應用程式架構
+
 Express-Handlebars - 模板引擎
