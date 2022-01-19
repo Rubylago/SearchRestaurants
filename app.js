@@ -92,12 +92,23 @@ app.get('/search', (req, res)=>{
   // console.log('query:', req.query.keyword)
 
   const keyword = req.query.keyword.toLowerCase()
-  const restaurant = restaurants.results.filter(restaurant => 
-    restaurant.name.toLowerCase().includes(keyword) ||  
-    restaurant.category.toLowerCase().includes(keyword)
-    )
+  RestaurantSchema.find({})
+    .lean()
+    .then( Restaurant => {
+      const filterdata = Restaurant.filter(
+        data =>
+        data.name.toLowerCase().includes(keyword) ||  
+        data.category.toLowerCase().includes(keyword)
+      )
+      res.render('index', {Restaurant: filterdata, keyword: keyword})
+    })
+    .catch(error => console.log(error))
+  // const restaurant = restaurants.results.filter(restaurant => 
+  //   restaurant.name.toLowerCase().includes(keyword) ||  
+  //   restaurant.category.toLowerCase().includes(keyword)
+  // )
   
-  res.render('index', {restaurant: restaurant, keyword: keyword})
+  // res.render('index', {restaurant: restaurant, keyword: keyword})
 })
 
 app.post('/restaurants/:id/delete', (req, res) => {
