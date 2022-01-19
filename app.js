@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-
+const RestaurantSchema = require('./models/Restaurant')
 const app = express()
 port = 3000
 
@@ -17,7 +17,7 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
-const restaurants = require('./restaurant.json')
+// const restaurants = require('./restaurant.json')
 
 //set template engine
 app.engine('handlebars', exphbs({defaultLayout:'main'}))
@@ -28,17 +28,30 @@ app.use(express.static('public'))
 
 //routes setting
 app.get('/', (req, res)=>{
-  res.render('index', {restaurant: restaurants.results})
+  RestaurantSchema.find()  //取出RestaurantSchema Model所有資料
+    .lean()   //轉換成乾淨陣列   
+    .then(Restaurant => res.render('index', { Restaurant })) //傳給index 樣板
+    .catch(error => console.log(error))
+
+  // res.render('index', {restaurant: restaurants.results})
 })
 
-app.get('/restaurants/:restaurant_id', (req, res)=>{
+app.get('/restaurants/:id', (req, res)=>{
   // get restaurant_id
   // console.log('restaurants id:', req.params.restaurant_id)
 
-  const restaurant = restaurants.results.find(restaurant =>
-    restaurant.id.toString() === req.params.restaurant_id
-  )
-  res.render('show', { restaurant: restaurant })
+  // const restaurant = restaurants.results.find(restaurant =>
+  //   restaurant.id.toString() === req.params.restaurant_id
+  // )
+
+  const id = req.params.id
+  return RestaurantSchema.findById(id)
+    .lean()
+    // .then(item => console.log(item,'1'))
+    .then(item => res.render('show',{ item }))
+    .catch(error => console.log(error))
+  
+  // res.render('show', { restaurant: restaurant })
 })
 
 app.get('/search', (req, res)=>{
