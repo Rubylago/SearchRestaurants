@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const { get } = require('express/lib/response')
 const mongoose = require('mongoose')
 const RestaurantSchema = require('./models/Restaurant')
 const app = express()
@@ -26,6 +27,9 @@ app.set('view engine', 'handlebars')
 //告訴 Express 靜態檔案的資料夾位置
 app.use(express.static('public'))
 
+//set body-parser
+app.use(express.urlencoded({ extended: true }))
+
 //routes setting
 app.get('/', (req, res)=>{
   RestaurantSchema.find()  //取出RestaurantSchema Model所有資料
@@ -34,6 +38,18 @@ app.get('/', (req, res)=>{
     .catch(error => console.log(error))
 
   // res.render('index', {restaurant: restaurants.results})
+})
+
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  // console.log('body', req.body)
+  const data = req.body
+  return RestaurantSchema.create( data )
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 app.get('/restaurants/:id', (req, res)=>{

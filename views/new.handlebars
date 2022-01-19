@@ -1,0 +1,57 @@
+<div style="padding: 50px 150px;">
+  <form action="/restaurants" method="POST" class="row g-3 ">
+    <div class="form-group">
+      <label for="name">name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="name_en">name_en</label>
+      <input type="text" class="form-control"  name="name_en" id="name_en" placeholder="Enter name in english" required>
+    </div>  
+
+    <div class="form-group">
+      <label for="category">category</label>
+        <select  class="form-select" name="category" id="category"  required>
+          <option>中東料理</option>
+          <option>日本料理</option>
+          <option>義式餐廳</option>
+          <option>美式</option>
+          <option>酒吧</option>
+          <option>咖啡</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+      <label for="image">image</label>
+      <input type="text" class="form-control"  name="image" id="image" placeholder="Enter image URL" required>
+    </div>
+  
+    <div class="form-group">
+      <label for="location">location</label>
+      <input type="text" class="form-control" name="location"  id="location" placeholder="Enter location" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="phone">phone</label>
+      <input type="number" class="form-control" name="phone" id="phone" placeholder="Enter phone number" required>
+    </div>
+
+    <div class="form-group">
+      <label for="google_map">google_map</label>
+      <input type="text" class="form-control"  name="google_map" id="google_map" placeholder="Enter google_map URL" required>
+    </div>
+
+    <div class="form-group">
+      <label for="rating">rating</label>
+      <input type="number" class="form-control" name="rating" id="rating" placeholder="Enter rating" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">description</label>
+      <input type="text" class="form-control"  name="description" id="description" placeholder="Enter description" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>

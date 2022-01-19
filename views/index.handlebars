@@ -19,9 +19,10 @@
 <!-- restaurant list -->
 
 <div class="container mt-5">
-  <div class="row row-cols-3">
+  <a href="/restaurants/new">Create New Restaurant</a>
+  <div class="row row-cols-3" >
   {{#each Restaurant }}
-    <div class="col ">
+    <div class="col" style="margin-bottom: 50px;">
       <div class="card-columns">
         <a href="/restaurants/{{this._id}}" class="text-secondary">
           <div class="card mb-3">
@@ -41,6 +42,13 @@
           </div>
         </a>
       </div>
+      
+      <div style="display: flex; justify-content: flex-end;">
+        <a href="/restaurants/{{ this._id }}/edit" style="padding: 5px;">Edit</a>
+        <a href="/restaurants/{{ this._id }}" style="padding: 5px;">Detail</a>
+        <button>Delete</button>
+      </div>
+
     </div>
   {{/each}}
   </div>
