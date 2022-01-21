@@ -30,6 +30,19 @@ app.use(express.urlencoded({ extended: true }))
 app.get('/', (req, res)=>{
   RestaurantSchema.find()  
     .lean()    
+    .sort()
+    .then(Restaurant => res.render('index', { Restaurant })) 
+    .catch(error => console.log(error))
+})
+
+// sort
+app.get('/sort/:sort', (req, res)=>{
+  const sort = req.params.sort
+  // console.log('sort', sort)
+ 
+  RestaurantSchema.find()  
+    .lean()    
+    .sort(`${sort}`)
     .then(Restaurant => res.render('index', { Restaurant })) 
     .catch(error => console.log(error))
 })
