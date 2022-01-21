@@ -18,26 +18,20 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
-// const restaurants = require('./restaurant.json')
-
-//set template engine
+// set template engine
 app.engine('handlebars', exphbs({defaultLayout:'main'}))
 app.set('view engine', 'handlebars')
 
-//告訴 Express 靜態檔案的資料夾位置
 app.use(express.static('public'))
 
-//set body-parser
 app.use(express.urlencoded({ extended: true }))
 
-//routes setting
+// routes setting
 app.get('/', (req, res)=>{
-  RestaurantSchema.find()  //取出RestaurantSchema Model所有資料
-    .lean()   //轉換成乾淨陣列   
-    .then(Restaurant => res.render('index', { Restaurant })) //傳給index 樣板
+  RestaurantSchema.find()  
+    .lean()    
+    .then(Restaurant => res.render('index', { Restaurant })) 
     .catch(error => console.log(error))
-
-  // res.render('index', {restaurant: restaurants.results})
 })
 
 app.get('/restaurants/new', (req, res) => {
@@ -45,7 +39,6 @@ app.get('/restaurants/new', (req, res) => {
 })
 
 app.post('/restaurants', (req, res) => {
-  // console.log('body', req.body)
   const data = req.body
   return RestaurantSchema.create( data )
     .then(() => res.redirect('/'))
@@ -53,25 +46,14 @@ app.post('/restaurants', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res)=>{
-  // get restaurant_id
-  // console.log('restaurants id:', req.params.restaurant_id)
-
-  // const restaurant = restaurants.results.find(restaurant =>
-  //   restaurant.id.toString() === req.params.restaurant_id
-  // )
-
   const id = req.params.id
   return RestaurantSchema.findById(id)
     .lean()
-    // .then(item => console.log(item,'1'))
     .then(item => res.render('show',{ item }))
     .catch(error => console.log(error))
-  
-  // res.render('show', { restaurant: restaurant })
 })
 
 app.get('/restaurants/:id/edit', (req, res) => {
-  // console.log('restaurants id:', req.params.id)
   const id = req.params.id
   return RestaurantSchema.findById(id)
     .lean()
@@ -88,9 +70,6 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 app.get('/search', (req, res)=>{
-  // get queryString
-  // console.log('query:', req.query.keyword)
-
   const keyword = req.query.keyword.toLowerCase()
   RestaurantSchema.find({})
     .lean()
@@ -103,12 +82,6 @@ app.get('/search', (req, res)=>{
       res.render('index', {Restaurant: filterdata, keyword: keyword})
     })
     .catch(error => console.log(error))
-  // const restaurant = restaurants.results.filter(restaurant => 
-  //   restaurant.name.toLowerCase().includes(keyword) ||  
-  //   restaurant.category.toLowerCase().includes(keyword)
-  // )
-  
-  // res.render('index', {restaurant: restaurant, keyword: keyword})
 })
 
 app.post('/restaurants/:id/delete', (req, res) => {
@@ -118,7 +91,6 @@ app.post('/restaurants/:id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
-
 
 app.listen(port, ()=>(
   console.log(`this app is listen to http://localhost:${port}`)
