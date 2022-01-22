@@ -1,6 +1,6 @@
 <div style="padding: 50px 150px;">
   <a href="/">back</a>  
-  <form action="/restaurants/{{ item._id }}/edit" method="POST" class="row g-3 ">
+  <form action="/restaurants/{{ item._id }}?_method=PUT" method="POST" class="row g-3 ">
     <div class="form-group">
       <label for="name">name</label>
       <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{ item.name }}"required>

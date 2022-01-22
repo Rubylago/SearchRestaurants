@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const { get, redirect } = require('express/lib/response')
 const mongoose = require('mongoose')
 const RestaurantSchema = require('./models/Restaurant')
+const methodOverride = require('method-override')
 const app = express()
 port = 3000
 
@@ -19,31 +20,30 @@ db.once('open', () => {
 })
 
 // set template engine
-app.engine('handlebars', exphbs({defaultLayout:'main'}))
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
-
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // routes setting
-app.get('/', (req, res)=>{
-  RestaurantSchema.find()  
-    .lean()    
+app.get('/', (req, res) => {
+  RestaurantSchema.find()
+    .lean()
     .sort()
-    .then(Restaurant => res.render('index', { Restaurant })) 
+    .then(Restaurant => res.render('index', { Restaurant }))
     .catch(error => console.log(error))
 })
 
 // sort
-app.get('/sort/:sort', (req, res)=>{
+app.get('/sort/:sort', (req, res) => {
   const sort = req.params.sort
-  // console.log('sort', sort)
  
-  RestaurantSchema.find()  
-    .lean()    
+  RestaurantSchema.find()
+    .lean()
     .sort(`${sort}`)
-    .then(Restaurant => res.render('index', { Restaurant })) 
+    .then(Restaurant => res.render('index', { Restaurant }))
     .catch(error => console.log(error))
 })
 
@@ -58,7 +58,7 @@ app.post('/restaurants', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.get('/restaurants/:id', (req, res)=>{
+app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return RestaurantSchema.findById(id)
     .lean()
@@ -74,7 +74,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id', (req, res) => {
   const id = req.params.id
   const data = req.body
   return RestaurantSchema.findByIdAndUpdate(id, data)
@@ -82,22 +82,22 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.get('/search', (req, res)=>{
+app.get('/search', (req, res) => {
   const keyword = req.query.keyword.toLowerCase()
   RestaurantSchema.find({})
     .lean()
-    .then( Restaurant => {
+    .then(Restaurant => {
       const filterdata = Restaurant.filter(
         data =>
-        data.name.toLowerCase().includes(keyword) ||  
+        data.name.toLowerCase().includes(keyword) || 
         data.category.toLowerCase().includes(keyword)
       )
-      res.render('index', {Restaurant: filterdata, keyword: keyword})
+      res.render('index', { Restaurant: filterdata, keyword: keyword })
     })
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return RestaurantSchema.findById(id)
     .then(item => item.remove())
@@ -105,6 +105,6 @@ app.post('/restaurants/:id/delete', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.listen(port, ()=>(
+app.listen(port, () => (
   console.log(`this app is listen to http://localhost:${port}`)
 ))

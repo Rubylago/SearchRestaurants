@@ -57,7 +57,7 @@
       <div style="display: flex; justify-content: flex-end;">
         <a href="/restaurants/{{ this._id }}/edit" style="padding: 5px;">Edit</a>
         <a href="/restaurants/{{ this._id }}" style="padding: 5px;">Detail</a>
-        <form action="/restaurants/{{ this._id }}/delete" method="POST">
+        <form action="/restaurants/{{ this._id }}?_method=DELETE" method="POST">
           <button>Delete</button>
         </form>  
       </div>
