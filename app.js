@@ -4,6 +4,8 @@ const { get, redirect } = require('express/lib/response')
 const mongoose = require('mongoose')
 const RestaurantSchema = require('./models/Restaurant')
 const methodOverride = require('method-override')
+const routes = require('./routes')
+
 const app = express()
 port = 3000
 
@@ -26,84 +28,7 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
-
-// routes setting
-app.get('/', (req, res) => {
-  RestaurantSchema.find()
-    .lean()
-    .sort()
-    .then(Restaurant => res.render('index', { Restaurant }))
-    .catch(error => console.log(error))
-})
-
-// sort
-app.get('/sort/:sort', (req, res) => {
-  const sort = req.params.sort
- 
-  RestaurantSchema.find()
-    .lean()
-    .sort(`${sort}`)
-    .then(Restaurant => res.render('index', { Restaurant }))
-    .catch(error => console.log(error))
-})
-
-app.get('/restaurants/new', (req, res) => {
-  return res.render('new')
-})
-
-app.post('/restaurants', (req, res) => {
-  const data = req.body
-  return RestaurantSchema.create( data )
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-
-app.get('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  return RestaurantSchema.findById(id)
-    .lean()
-    .then(item => res.render('show',{ item }))
-    .catch(error => console.log(error))
-})
-
-app.get('/restaurants/:id/edit', (req, res) => {
-  const id = req.params.id
-  return RestaurantSchema.findById(id)
-    .lean()
-    .then(item => res.render('edit', { item }))
-    .catch(error => console.log(error))
-})
-
-app.put('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  const data = req.body
-  return RestaurantSchema.findByIdAndUpdate(id, data)
-    .then(() => res.redirect(`/restaurants/${id}/edit`))
-    .catch(error => console.log(error))
-})
-
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword.toLowerCase()
-  RestaurantSchema.find({})
-    .lean()
-    .then(Restaurant => {
-      const filterdata = Restaurant.filter(
-        data =>
-        data.name.toLowerCase().includes(keyword) || 
-        data.category.toLowerCase().includes(keyword)
-      )
-      res.render('index', { Restaurant: filterdata, keyword: keyword })
-    })
-    .catch(error => console.log(error))
-})
-
-app.delete('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  return RestaurantSchema.findById(id)
-    .then(item => item.remove())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
+app.use(routes)
 
 app.listen(port, () => (
   console.log(`this app is listen to http://localhost:${port}`)
