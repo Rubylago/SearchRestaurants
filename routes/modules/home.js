@@ -21,17 +21,24 @@ router.get('/sort/:sort', (req, res) => {
 })
 
 router.get('/search', (req, res) => {
-  const keyword = req.query.keyword.toLowerCase()
-  RestaurantSchema.find({})
+  const keyword = req.query.keyword.toLowerCase().trim()
+
+  // 用正則表達式.test 檢查非法字元
+  if(/[~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(keyword)){   
+    return
+  }
+  
+  RestaurantSchema.find({ $or: [{name: {$regex: keyword, $options: 'i' }}, {name_en: {$regex: keyword, $options: 'i' }}, {category: {$regex: keyword, $options: 'i' }}]})
     .lean()
-    .then(Restaurant => {
-      const filterdata = Restaurant.filter(
-        data =>
-        data.name.toLowerCase().includes(keyword) || 
-        data.category.toLowerCase().includes(keyword)
-      )
-      res.render('index', { Restaurant: filterdata, keyword: keyword })
-    })
+    .then(Restaurant => res.render('index', { Restaurant }))
+    // .then(Restaurant => {
+    //   const filterdata = Restaurant.filter(
+    //     data =>
+    //     data.name.toLowerCase().includes(keyword) || 
+    //     data.category.toLowerCase().includes(keyword)
+    //   )
+    //   res.render('index', { Restaurant: filterdata, keyword: keyword })
+    // })
     .catch(error => console.log(error))
 })
 
