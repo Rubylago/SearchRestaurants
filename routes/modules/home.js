@@ -30,15 +30,7 @@ router.get('/search', (req, res) => {
   
   RestaurantSchema.find({ $or: [{name: {$regex: keyword, $options: 'i' }}, {name_en: {$regex: keyword, $options: 'i' }}, {category: {$regex: keyword, $options: 'i' }}]})
     .lean()
-    .then(Restaurant => res.render('index', { Restaurant }))
-    // .then(Restaurant => {
-    //   const filterdata = Restaurant.filter(
-    //     data =>
-    //     data.name.toLowerCase().includes(keyword) || 
-    //     data.category.toLowerCase().includes(keyword)
-    //   )
-    //   res.render('index', { Restaurant: filterdata, keyword: keyword })
-    // })
+    .then(Restaurant => res.render('index', { Restaurant, keyword }))
     .catch(error => console.log(error))
 })
 
