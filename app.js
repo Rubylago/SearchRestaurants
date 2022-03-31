@@ -5,6 +5,7 @@ const { get, redirect } = require('express/lib/response')
 
 const RestaurantSchema = require('./models/Restaurant')
 const methodOverride = require('method-override')
+const usePassport = require('./config/passport')
 const routes = require('./routes')
 require('./config/mongoose')
 
@@ -25,6 +26,8 @@ app.use(session({
 }))
 
 app.use(methodOverride('_method'))
+
+usePassport(app)
 
 app.use(routes)
 
