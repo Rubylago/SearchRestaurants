@@ -31,11 +31,7 @@ router.post('/register', (req, res) => {
   }
   if (errors.length) {
     return res.render('register', {
-      errors,
-      name,
-      email,
-      password,
-      confirmPassword
+      errors, name, email, password, confirmPassword
     })
   }
   // 判斷是否已經註冊  
@@ -43,8 +39,9 @@ router.post('/register', (req, res) => {
     .then(user => {
       // 如果已經註冊 => 返回原本頁面並跳提醒文字
       if(user) {
-        res.render('register', {
-          name, email, password, confirmPassword
+        errors.push({ message: '這個 Email 已經註冊過了' })
+        return res.render('register', {
+          errors, name, email, password, confirmPassword
         })
       } 
       // 如果還沒註冊 => 寫入資料庫
