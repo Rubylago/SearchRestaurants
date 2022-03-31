@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const RestaurantSchema = require('../../models/Restaurant')
-const UserSchema = require('../../models/user')
+
 
 router.get('/new', (req, res) => {
   return res.render('new')
