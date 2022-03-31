@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const { get, redirect } = require('express/lib/response')
 
@@ -16,7 +17,15 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+
+app.use(session({
+  secret: 'LetMeIn',
+  resave: false,
+  saveUninitialized: true
+}))
+
 app.use(methodOverride('_method'))
+
 app.use(routes)
 
 app.listen(port, () => (
